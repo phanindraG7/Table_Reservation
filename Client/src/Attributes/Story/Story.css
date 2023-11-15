@@ -1,0 +1,44 @@
+.header-h1 {
+    text-align: center;
+    margin-left: 10px;
+    font-family: var(--font-base);
+    color: var(--color-golden);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: capitalize;
+    line-height: 117px;
+    font-size: 50px;
+  }
+  p{
+    color: #adb7bd; 
+    font-family: 'Lucida Sans', Arial, sans-serif; 
+    width: 43%;
+    font-weight:bold;
+    font-size: 16px; 
+    line-height: 26px; 
+    text-indent: 30px; 
+    margin-left: 30%;
+    text-align: center;
+  }
+  #ourstory{
+    color: var(--color-golden);
+    font-family: var(--font-base);
+    font-size: 100px;
+    font-weight: 7 500;
+    filter: brightness(1);
+  }
+  #storybg{
+    text-align: center;
+    
+    font-family: 'Lucida Sans', Arial, sans-serif; 
+    font-size: 100px;
+    padding-top: 15%;
+    background-image: url("https://cdn.pixabay.com/photo/2017/03/18/12/24/cafe-2153865_1280.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 650px;
+    width: 100%;
+    filter: brightness(0.9);
+  
+  }

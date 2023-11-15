@@ -1,0 +1,32 @@
+
+
+.app__wrapper_info {
+    display: inline-block;
+  }
+  .text-container {
+    margin-left: 2%;
+    margin-top: 10%;
+  }
+  
+  .slideshow-container {
+    margin-top: -30%;
+  }
+  
+  .app__header-h1 {
+    margin-left: 10px;
+    font-family: var(--font-base);
+    color: var(--color-golden);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: capitalize;
+    line-height: 117px;
+    font-size: 50px;
+  }
+  
+  #p1 {
+    text-align:justify;
+    color: #adb7bd; font-family: 'Lucida Sans', Arial, sans-serif; 
+    width: 40%;
+    
+  }
+  

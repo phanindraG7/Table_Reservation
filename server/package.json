@@ -1,0 +1,38 @@
+{
+  "name": "project-2",
+  "version": "1.0.0",
+  "description": "Table Reservation",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\" "
+  },
+  "author": "Phanindra",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bootstrap": "^5.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "framer-motion": "^10.12.17",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.3.1",
+    "nodemailer": "^6.9.3",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.8.0",
+    "react-dom": "^18.2.0",
+    "react-icon": "^1.0.0",
+    "react-icons": "^4.10.1",
+    "react-intersection-observer": "^9.5.1",
+    "react-router": "^6.14.1",
+    "react-router-dom": "^6.13.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "nodemon": "^2.0.22"
+  }
+}
