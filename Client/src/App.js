@@ -7,7 +7,7 @@ import Signup from './Attributes/Admin/Signup';
 import Adminhome from './Attributes/Admin/Adminhome';
 import React, { useRef } from 'react';
 
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 //import { formToJSON } from 'axios';
 
 function App() {

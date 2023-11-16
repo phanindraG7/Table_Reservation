@@ -20,7 +20,7 @@
 
 /* General styles for the Navbar */
 .navbar {
-  background-color: #343a40; /* Dark background color */
+  background-color: #343a40; 
 }
 
 .navbar_logo img {
@@ -34,14 +34,14 @@
 }
 
 .navbar-nav .nav-link {
-  color: #ffffff; /* White color for links */
+  color: #ffffff; 
 }
 
 .navbar-nav .nav-link:hover {
-  color: #eecc8e; /* Hover color for links */
+  color: #eecc8e; 
 }
 
-/* Book Now button */
+
 #booktable {
   margin-right: 15px;
 }
@@ -58,7 +58,7 @@
 /* Style for the close button */
 .navbar-toggler {
   border: none;
-  background-color: white;
+  background-color: transparent;
   cursor: pointer;
 }
 
@@ -67,12 +67,15 @@
 }
 
 /* Close icon styles */
+
 .navbar-close-icon {
   font-size: 1.5rem;
-  color: transparent;
-  
+  color: white;
   cursor: pointer;
+  float: right; 
 }
+
+
 
 /* Center-align items for small screens */
 @media (max-width: 991px) {
