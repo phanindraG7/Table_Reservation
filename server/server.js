@@ -20,6 +20,6 @@ app.use(express.json());
 app.use('/' ,userRouter)
 
 
-app.listen(3000, () => {
+app.listen(8500, () => {
  console.log("Server started at port 3000");
 });

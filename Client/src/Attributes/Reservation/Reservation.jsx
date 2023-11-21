@@ -14,18 +14,19 @@ const Reservation = () => {
     reservationDate: '',
     mealOption: '',
     reservationTime: '',
-    selectedTable: null,
+    tableNumber: null,
+    capacity:null,
     additionalNotes: '',
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [errorMessage, setErrorMessage] = useState('');
   const [tables] = useState([
-    { id: 1, text: 'Capacity 1-2', isSelected: false },
-    { id: 2, text: 'Capacity 3-4', isSelected: false },
-    { id: 3, text: 'Capacity 5-6', isSelected: false },
-    { id: 4, text: 'Capacity 7-8', isSelected: false },
-    { id: 5, text: 'Capacity 9-12', isSelected: false },
+    { id: 1, capacity: 2, isSelected: false },
+    { id: 2, capacity: 4, isSelected: false },
+    { id: 3, capacity: 6, isSelected: false },
+    { id: 4, capacity: 8, isSelected: false },
+    { id: 5, capacity: 12, isSelected: false },
   ]);
 
 
@@ -43,22 +44,24 @@ const Reservation = () => {
   const handleTableSelect = (selectedTable) => {
     setFormData({
       ...formData,
-      selectedTable,
+      tableNumber : selectedTable.id,
+      capacity : selectedTable.capacity
     });
   };
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    if (!formData.selectedTable) {
+    if (!formData.tableNumber) {
       setErrorMessage('Please select a table.');
       return;
     }
     try {
       const response = await axios.post('http://localhost:8500/booknow', formData);
       console.log(response);
+      alert(response.data)
     } catch (error) {
       console.error('Error during POST request:', error);
-      console.log('Error response:', error.response); // Log the server's response
+      alert(error.response.data.error)
     }
     
     setErrorMessage('');
@@ -174,9 +177,9 @@ const Reservation = () => {
               key={table.id}
               id={table.id}
               text={table.text}
-              isSelected={table.id === formData.selectedTable}
+              isSelected={table.id === formData.tableNumber}
               isSelectable={true}
-              onClick={() => handleTableSelect(table.id)}
+              onClick={() => handleTableSelect(table)}
             />
           ))}
         </div>
@@ -190,7 +193,7 @@ const Reservation = () => {
             onChange={handleChange}
           />
         </div>
-        <button style={{backgroundColor:"#f5deb3" ,marginLeft:"45%"}} type="submit" className="btn btn-primary  text-black" disabled={!formData.selectedTable}>
+        <button style={{backgroundColor:"#f5deb3" ,marginLeft:"45%"}} type="submit" className="btn btn-primary  text-black" disabled={!formData.tableNumber}>
           Submit
         </button>
       </form>
