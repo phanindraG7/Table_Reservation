@@ -1,3 +1,14 @@
+const reservationSchema = require('../models/Reservation')
+const nodemailer = require('nodemailer');
+
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'ahaofficialott@gmail.com',
+    pass: 'mprfnlgrtsdjvycw'
+  }
+});
 
 const booking = async(req, res) => {
     try {
@@ -25,29 +36,26 @@ const booking = async(req, res) => {
         if (existingReservation) {
           return res.status(400).json({ error: 'Table already reserved at this date and time.' });
         }
-        const existingReservationEmail = await reservationSchema.findOne({
+        const existinguser = await reservationSchema.findOne({
           customerEmail,
         });
-    
-        if (existingReservationEmail) {
-          return res.status(400).json({ error: 'Email already used for reservation.' });
         
-        }
-    
-        const existingReservationPhone = await reservationSchema.findOne({
+        const existingphoneuser = await reservationSchema.findOne({
           customerPhone,
         });
-    
-        if (existingReservationPhone) {
-          return res.status(400).json({ error: 'Phone number already used for reservation.' });
-        }
         
-    
+
+        if (existinguser) {
+          return res.status(400).json({ error: 'user details is already used for reservation.' });
+        }
+        else if(existingphoneuser)
+        {
+          return res.status(400).json({ error: 'user details is already used for reservation.' });
+        }
         let newRegistration = new reservationSchema({
           tableNumber,
           capacity,
           reservationTime: reservationDateTime,
-          
           customerName,
           customerEmail,
           customerPhone,
@@ -55,8 +63,6 @@ const booking = async(req, res) => {
           mealOption,
           reservationTime,
           reservationDate,
-          // Store the received meal option in the database
-          // time, // Store the received time in the database
         });
     
         await newRegistration.save();
