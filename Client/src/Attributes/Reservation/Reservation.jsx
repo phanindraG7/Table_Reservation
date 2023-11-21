@@ -4,83 +4,68 @@ import './Reservation.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fetchMongo from '../../helpers/fetchMongo';
 import postMongo from '../../helpers/postMongo';
-
-const Table = ({ id, text, isSelected, isSelectable, onClick }) => {
-  const tableClassName = isSelected ? 'table selected' : 'table';
-
-  return (
-    <div
-      className={isSelectable ? tableClassName : 'table masked'}
-      onClick={isSelectable ? onClick : null}
-    >
-      <span className="table-info text-white">Table Type {id}</span>
-      {text && <span className="table-text">{text}</span>}
-    </div>
-  );
-};
+import Table from './Table';
 
 const Reservation = () => {
-  const checkIfTableReserved = fetchMongo();
-  const tableReserve = postMongo();
+  const initialFormData = {
+    customerName: '',
+    customerEmail: '',
+    customerPhone: '',
+    reservationDate: '',
+    mealOption: '',
+    reservationTime: '',
+    selectedTable: null,
+    additionalNotes: '',
+  };
 
-  const tables = [
+  const [formData, setFormData] = useState(initialFormData);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [tables] = useState([
     { id: 1, text: 'Capacity 1-2', isSelected: false },
     { id: 2, text: 'Capacity 3-4', isSelected: false },
     { id: 3, text: 'Capacity 5-6', isSelected: false },
     { id: 4, text: 'Capacity 7-8', isSelected: false },
     { id: 5, text: 'Capacity 9-12', isSelected: false },
-  ]
-
-  const [selectedTable, setSelectedTable] = useState(null);
-  const [customerName, setCustomerName] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
-  const [additionalNotes, setAdditionalNotes] = useState('');
-  const [reservationDate, setReservationDate] = useState('');
-  const [reservationTime, setReservationTime] = useState('');
-  const [mealOption, setMealOption] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  ]);
 
 
-  const handleSubmit = (e) => {
+  console.log(formData)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name)
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleTableSelect = (selectedTable) => {
+    setFormData({
+      ...formData,
+      selectedTable,
+    });
+  };
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    if (!formData.selectedTable) {
+      setErrorMessage('Please select a table.');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:8500/booknow', formData);
+      console.log(response);
+    } catch (error) {
+      console.error('Error during POST request:', error);
+      console.log('Error response:', error.response); // Log the server's response
+    }
+    
+    setErrorMessage('');
+  
+    console.log('Form data submitted:', formData);
 
-    const selectedTableData = tables.find((table) => table.id === selectedTable);
-    const reservationDateTime = new Date(reservationDate + 'T' + reservationTime);
-    const reservationData = {
-      tableNumber: selectedTable,
-      capacity: selectedTableData.text,
-      reservationDate,
-      reservationTime,
-      customerName,
-      customerEmail,
-      customerPhone,
-      additionalNotes,
-      mealOption,
-    };
-
-    checkIfTableReserved(selectedTable, reservationDate)
-      .then((isReserved) => {
-        if (isReserved) {
-          setErrorMessage('The table is already reserved on this date.');
-        } else {
-
-          tableReserve(reservationData);
-          setErrorMessage('');
-          setSelectedTable(null);
-          setCustomerName('');
-          setCustomerEmail('');
-          setCustomerPhone('');
-          setAdditionalNotes('');
-          setReservationDate('');
-          setReservationTime('');
-          setMealOption('');
-        }
-      })
-      .catch((error) => {
-        console.error('Error checking reservation:', error);
-        alert('Table Already reversed!! Please select another table');
-      });
+    setFormData(initialFormData);
   };
 
   return (
@@ -93,8 +78,9 @@ const Reservation = () => {
             type="text"
             className="form-control"
             id="customerName"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
+            name='customerName'
+            value={formData.customerName}
+            onChange={handleChange}
             required
           />
         </div>
@@ -104,8 +90,9 @@ const Reservation = () => {
             type="email"
             className="form-control"
             id="customerEmail"
-            value={customerEmail}
-            onChange={(e) => setCustomerEmail(e.target.value)}
+            name='customerEmail'
+            value={formData.customerEmail}
+            onChange={handleChange}
             required
           />
         </div>
@@ -115,8 +102,9 @@ const Reservation = () => {
             type="tel"
             className="form-control"
             id="customerPhone"
-            value={customerPhone}
-            onChange={(e) => setCustomerPhone(e.target.value)}
+            name='customerPhone'
+            value={formData.customerPhone}
+            onChange={handleChange}
             required
           />
         </div>
@@ -126,8 +114,9 @@ const Reservation = () => {
             type="date"
             className="form-control"
             id="reservationDate"
-            value={reservationDate}
-            onChange={(e) => setReservationDate(e.target.value)}
+            name='reservationDate'
+            value={formData.reservationDate}
+            onChange={handleChange}
             required
           />
         </div>
@@ -136,8 +125,9 @@ const Reservation = () => {
           <select
             className="form-control"
             id="mealOption"
-            value={mealOption}
-            onChange={(e) => setMealOption(e.target.value)}
+            name='mealOption'
+            value={formData.mealOption}
+            onChange={handleChange}
             required
           >
             <option value="">Select Meal Option</option>
@@ -150,12 +140,13 @@ const Reservation = () => {
           <select
             className="form-control"
             id="reservationTime"
-            value={reservationTime}
-            onChange={(e) => setReservationTime(e.target.value)}
+            name='reservationTime'
+            value={formData.reservationTime}
+            onChange={handleChange}
             required
           >
             <option value="">Select Time</option>
-            {mealOption === 'lunch' ? (
+            {formData.mealOption === 'lunch' ? (
               <>
                 <option value="11:00 AM">11:00 AM</option>
                 <option value="12:00 PM">12:00 PM</option>
@@ -164,7 +155,7 @@ const Reservation = () => {
                 <option value="02:00 PM">02:00 PM</option>
                 {/* Add more lunch time options */}
               </>
-            ) : mealOption === 'dinner' ? (
+            ) : formData.mealOption === 'dinner' ? (
               <>
                 <option value="8:00 PM">8:00 PM</option>
                 <option value="9:00 PM">9:00 PM</option>
@@ -183,9 +174,9 @@ const Reservation = () => {
               key={table.id}
               id={table.id}
               text={table.text}
-              isSelected={table.id === selectedTable}
+              isSelected={table.id === formData.selectedTable}
               isSelectable={true}
-              onClick={() => setSelectedTable(table.id)}
+              onClick={() => handleTableSelect(table.id)}
             />
           ))}
         </div>
@@ -194,11 +185,12 @@ const Reservation = () => {
           <textarea
             id="additionalNotes"
             className="form-control"
-            value={additionalNotes}
-            onChange={(e) => setAdditionalNotes(e.target.value)}
+            name='additionalNotes'
+            value={formData.additionalNotes}
+            onChange={handleChange}
           />
         </div>
-        <button style={{backgroundColor:"#f5deb3" ,marginLeft:"45%"}} type="submit" className="btn btn-primary  text-black" disabled={!selectedTable}>
+        <button style={{backgroundColor:"#f5deb3" ,marginLeft:"45%"}} type="submit" className="btn btn-primary  text-black" disabled={!formData.selectedTable}>
           Submit
         </button>
       </form>
